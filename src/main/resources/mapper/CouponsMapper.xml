@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yrwl.api.dao.CouponsDao">
+
+    <select id="listCouponsProperty" parameterType="java.util.Map" resultType="com.yrwl.api.entity.CouponsPropertyEntity">
+        SELECT
+            id, coupons_seq couponsSeq, app_id appId, name, mark, num, extend_info extendInfo,
+            superimposition_quantity superimpositionQuantity, state, status,
+            expiry_date expiryDate, receive_begin_date receiveBeginDate,
+            receive_end_date receiveEndDate, created_user createdUser, created_date createdDate,
+            modified_user modifiedUser, modified_date modifiedDate
+        FROM
+            coupons_property
+        <where>
+            <if test="couponsSeq != null and couponsSeq != ''">
+                coupons_seq = #{couponsSeq}
+            </if>
+            <if test="appId != null and appId != ''">
+                AND app_id = #{appId}
+            </if>
+            <if test="name != null and name != ''">
+                AND name = #{name}
+            </if>
+            <if test="state != null and state != ''">
+                AND state = #{state}
+            </if>
+            <if test="status != null and status != ''">
+                AND status = #{status}
+            </if>
+            <if test="expiryDate != null and expiryDate != ''">
+                <![CDATA[ AND expiry_date >= #{expiryDate}]]>
+            </if>
+            <if test="receiveBeginDate != null and receiveBeginDate != ''">
+                <![CDATA[ AND receive_begin_date <= #{receiveBeginDate}]]>
+            </if>
+            <if test="receiveEndDate != null and receiveEndDate != ''">
+                <![CDATA[ AND receive_end_date >= #{receiveEndDate}]]>
+            </if>
+        </where>
+        ORDER BY id
+    </select>
+
+    <select id="getCouponsProperty" parameterType="java.lang.String" resultType="com.yrwl.api.entity.CouponsPropertyEntity">
+        SELECT
+            id, coupons_seq couponsSeq, app_id appId, name, mark, num, extend_info extendInfo,
+            superimposition_quantity superimpositionQuantity, state, status,
+            expiry_date expiryDate, receive_begin_date receiveBeginDate,
+            receive_end_date receiveEndDate, created_user createdUser, created_date createdDate,
+            modified_user modifiedUser, modified_date modifiedDate
+        FROM
+            coupons_property
+        WHERE
+            app_id = #{appId}
+        AND coupons_seq = #{couponsSeq}
+    </select>
+
+    <insert id="addCouponsProperty" parameterType="com.yrwl.api.dto.CouponsPropertyDTO">
+        INSERT INTO
+            coupons_property
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            coupons_seq, app_id, name, mark, num, superimposition_quantity,
+            receive_begin_date, receive_end_date, expiry_date, extend_info, created_user
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            #{couponsSeq}, #{appId}, #{name}, #{mark}, #{num}, #{superimpositionQuantity},
+            #{receiveBeginDate}, #{receiveEndDate}, #{expiryDate}, #{extendInfo}, #{createdUser}
+        </trim>
+    </insert>
+
+    <update id="updateCouponsProperty" parameterType="com.yrwl.api.dto.CouponsPropertyDTO">
+        UPDATE
+            coupons_property
+        SET
+        <if test="state != null and state != ''">
+            state = #{state},
+        </if>
+        <if test="name != null and name != ''">
+            name = #{name},
+        </if>
+        <if test="num != null and num != ''">
+            num = #{num},
+        </if>
+        <if test="superimpositionQuantity != null and superimpositionQuantity != ''">
+            superimposition_quantity = #{superimpositionQuantity},
+        </if>
+        <if test="expiryDate != null and expiryDate != ''">
+            expiry_date = #{expiryDate},
+        </if>
+        <if test="status != null and status != ''">
+            status = #{status},
+        </if>
+        <if test="receiveBeginDate != null and receiveBeginDate != ''">
+            receive_begin_date = #{receiveBeginDate},
+        </if>
+        <if test="receiveEndDate != null and receiveEndDate != ''">
+            receive_end_date = #{receiveEndDate},
+        </if>
+            modified_user = #{modifiedUser}
+        WHERE
+            app_id = #{appId}
+        AND coupons_seq = #{couponsSeq}
+    </update>
+
+
+    <select id="listCoupons" parameterType="java.util.Map" resultType="com.yrwl.api.entity.CouponsEntity">
+        SELECT
+            id, app_id appId, coupons_seq couponsSeq, status, coupons_no couponsNo,
+            expiry_begin_date expiryBeginDate, expiry_end_date expiryEndDate,
+            created_user createdUser, created_date createdDate,
+            modified_user modifiedUser, modified_date modifiedDate
+        FROM
+            coupons
+        <where>
+            <if test="appId != null and appId != ''">
+                app_id = #{appId}
+            </if>
+            <if test="couponsSeq != null and couponsSeq != ''">
+                AND coupons_seq = #{couponsSeq}
+            </if>
+            <if test="couponsNo != null and couponsNo != ''">
+                AND coupons_no = #{couponsNo}
+            </if>
+            <if test="status != null and status != ''">
+                AND status = #{status}
+            </if>
+            <if test="expiryBeginDate != null and expiryBeginDate != ''">
+                <![CDATA[ AND expiry_begin_date <= #{expiryBeginDate}]]>
+            </if>
+            <if test="expiryEndDate != null and expiryEndDate != ''">
+                <![CDATA[ AND expiry_end_date >= #{expiryEndDate}]]>
+            </if>
+        </where>
+        ORDER BY id
+    </select>
+
+    <select id="getCoupons" parameterType="java.lang.String" resultType="com.yrwl.api.entity.CouponsEntity">
+        SELECT
+            id, app_id appId, coupons_seq couponsSeq, status, coupons_no couponsNo,
+            expiry_begin_date expiryBeginDate, expiry_end_date expiryEndDate,
+            created_user createdUser, created_date createdDate,
+            modified_user modifiedUser, modified_date modifiedDate
+        FROM
+            coupons
+        WHERE
+            coupons_seq = #{couponsSeq}
+        AND coupons_no = #{couponsNo}
+    </select>
+
+    <insert id="addCoupons" parameterType="com.yrwl.api.dto.CouponsDTO">
+        INSERT INTO
+            coupons
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            app_id, coupons_seq, coupons_no, status, expiry_begin_date,
+            expiry_end_date, created_user
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            #{appId}, #{couponsSeq}, #{couponsNo}, #{status}, #{expiryBeginDate},
+            #{expiryEndDate}, #{createdUser}
+        </trim>
+    </insert>
+
+    <update id="updateCoupons" parameterType="com.yrwl.api.dto.CouponsDTO">
+        UPDATE
+            coupons
+        SET
+        <if test="status != null and status != ''">
+            status = #{status},
+        </if>
+        <if test="expiryBeginDate != null and expiryBeginDate != ''">
+            expiry_begin_date = #{expiryBeginDate},
+        </if>
+        <if test="expiryEndDate != null and expiryEndDate != ''">
+            expiry_end_date = #{expiryEndDate},
+        </if>
+            modified_user = #{modifiedUser}
+        WHERE
+            coupons_seq = #{couponsSeq}
+        AND coupons_no = #{couponsNo}
+    </update>
+
+    <select id="listCouponsSeqType" parameterType="java.util.Map" resultType="com.yrwl.api.entity.CouponsSeqTypeEntity">
+        SELECT
+        id, coupons_seq couponsSeq, coupons_type couponsType,
+        created_user createdUser, created_date createdDate,
+        modified_user modifiedUser, modified_date modifiedDate
+        FROM
+            coupons_seq_type
+        <where>
+            <if test="couponsSeq != null and couponsSeq != ''">
+                coupons_seq = #{couponsSeq}
+            </if>
+            <if test="couponsType != null and couponsType != ''">
+                AND coupons_type = #{couponsType}
+            </if>
+        </where>
+        ORDER BY id
+    </select>
+
+    <insert id="addCouponsSeqType" parameterType="com.yrwl.api.dto.CouponsSeqTypeDTO">
+        INSERT INTO
+            coupons_seq_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            coupons_seq, coupons_type
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            #{couponsSeq}, #{couponsType}
+        </trim>
+    </insert>
+
+    <delete id="delCouponsSeqType" parameterType="com.yrwl.api.dto.CouponsSeqTypeDTO">
+        DELETE FROM
+            coupons_seq_type
+        WHERE
+            coupons_seq =  #{couponsSeq}
+            AND coupons_type = #{couponsType}
+    </delete>
+
+    <select id="getSuperimposition" resultType="java.lang.String">
+        SELECT
+            coupons_type
+        FROM
+            coupons_seq_type
+        WHERE
+            coupons_seq
+        IN
+        <foreach collection="list" item="seq" index="index" open="(" close=")" separator=",">
+            #{seq}
+        </foreach>
+        GROUP BY
+            coupons_type
+        HAVING
+            count( coupons_type ) = #{size};
+    </select>
+
+    <select id="listCouponsPropertyByExpiry" parameterType="java.util.Map" resultType="com.yrwl.api.entity.CouponsPropertyEntity">
+        SELECT
+            id, coupons_seq couponsSeq, app_id appId, name, mark, num,
+            superimposition_quantity superimpositionQuantity, state, status,
+            expiry_date expiryDate, receive_begin_date receiveBeginDate,
+            receive_end_date receiveEndDate, created_user createdUser, created_date createdDate,
+            modified_user modifiedUser, modified_date modifiedDate
+        FROM
+            coupons_property
+        WHERE
+            status in (0, 1, 2)
+            <![CDATA[ AND expiry_date < NOW() ]]>
+    </select>
+
+    <select id="listCouponsPropertyByReceive" parameterType="java.util.Map" resultType="com.yrwl.api.entity.CouponsPropertyEntity">
+        SELECT
+            id, coupons_seq couponsSeq, app_id appId, name, mark, num,
+            superimposition_quantity superimpositionQuantity, state, status,
+            expiry_date expiryDate, receive_begin_date receiveBeginDate,
+            receive_end_date receiveEndDate, created_user createdUser, created_date createdDate,
+            modified_user modifiedUser, modified_date modifiedDate
+        FROM
+            coupons_property
+        WHERE
+            state = 0
+            <![CDATA[
+                AND receive_begin_date <= NOW()
+                AND receive_end_date >= NOW()
+            ]]>
+    </select>
+
+    <select id="listCouponsPropertyByStop" parameterType="java.util.Map" resultType="com.yrwl.api.entity.CouponsPropertyEntity">
+        SELECT
+            id, coupons_seq couponsSeq, app_id appId, name, mark, num,
+            superimposition_quantity superimpositionQuantity, state, status,
+            expiry_date expiryDate, receive_begin_date receiveBeginDate,
+            receive_end_date receiveEndDate, created_user createdUser, created_date createdDate,
+            modified_user modifiedUser, modified_date modifiedDate
+        FROM
+            coupons_property
+        WHERE
+            state in (0, 1)
+            <![CDATA[
+                AND receive_end_date < NOW()
+            ]]>
+    </select>
+
+    <select id="listCouponsByConsume" parameterType="java.util.Map" resultType="com.yrwl.api.entity.CouponsEntity">
+        SELECT
+            id, coupons_seq couponsSeq, status, coupons_no couponsNo,
+            expiry_begin_date expiryBeginDate, expiry_end_date expiryEndDate,
+            created_user createdUser, created_date createdDate,
+            modified_user modifiedUser, modified_date modifiedDate
+        FROM
+            coupons
+        WHERE
+            status = 2
+            <![CDATA[
+            AND expiry_begin_date <= NOW()
+            AND expiry_end_date >= NOW()
+            ]]>
+        ORDER BY id
+    </select>
+
+    <select id="listCouponsByExpiry" parameterType="java.util.Map" resultType="com.yrwl.api.entity.CouponsEntity">
+        SELECT
+            id, coupons_seq couponsSeq, status, coupons_no couponsNo,
+            expiry_begin_date expiryBeginDate, expiry_end_date expiryEndDate,
+            created_user createdUser, created_date createdDate,
+            modified_user modifiedUser, modified_date modifiedDate
+        FROM
+            coupons
+        WHERE
+            status = 0
+            <![CDATA[
+            AND expiry_end_date < NOW()
+            ]]>
+        ORDER BY id
+    </select>
+</mapper>
