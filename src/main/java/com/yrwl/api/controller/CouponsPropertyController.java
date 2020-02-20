@@ -4,6 +4,7 @@ import com.yrwl.annotation.Auth;
 import com.yrwl.api.dto.AddCouponsPropertyDTO;
 import com.yrwl.api.dto.CouponsPropertyDTO;
 import com.yrwl.api.dto.IssueCouponsPropertyDTO;
+import com.yrwl.api.dto.UpdateCouponsPropertyDTO;
 import com.yrwl.api.entity.CouponsPropertyEntity;
 import com.yrwl.api.service.CouponsService;
 import com.yrwl.common.model.PageQueryModel;
@@ -76,7 +77,7 @@ public class CouponsPropertyController {
     }
 
     @PostMapping("stopConsume")
-    @ApiOperation(value = "停止使用优惠券", notes = "停止使用优惠券接口")
+    @ApiOperation(value = "停止使用优惠券", notes = "停止使用优惠券接口,已发布状态下才可使用")
     public ResponseObject<String> stopConsumeCouponsProperty(@Valid @RequestBody IssueCouponsPropertyDTO issueCouponsPropertyDTO){
         CouponsPropertyEntity couponsPropertyEntity = couponsService.getCouponsProperty(issueCouponsPropertyDTO.getAppId(), issueCouponsPropertyDTO.getCouponsSeq());
         if(couponsPropertyEntity == null){
@@ -95,7 +96,7 @@ public class CouponsPropertyController {
     }
 
     @PostMapping("renewConsume")
-    @ApiOperation(value = "恢复使用优惠券", notes = "恢复使用优惠券接口")
+    @ApiOperation(value = "恢复使用优惠券", notes = "恢复使用优惠券接口,停止使用状态下才可使用")
     public ResponseObject<String> renewConsumeCouponsProperty(@Valid @RequestBody IssueCouponsPropertyDTO issueCouponsPropertyDTO){
         CouponsPropertyEntity couponsPropertyEntity = couponsService.getCouponsProperty(issueCouponsPropertyDTO.getAppId(), issueCouponsPropertyDTO.getCouponsSeq());
         if(couponsPropertyEntity == null){
@@ -125,7 +126,7 @@ public class CouponsPropertyController {
     }
 
     @PostMapping("stopReceive")
-    @ApiOperation(value = "停止领取优惠券", notes = "停止领取优惠券接口")
+    @ApiOperation(value = "停止领取优惠券", notes = "停止领取优惠券接口,可领取状态下才可使用")
     public ResponseObject<String> stopReceiveCouponsProperty(@Valid @RequestBody IssueCouponsPropertyDTO issueCouponsPropertyDTO){
         CouponsPropertyEntity couponsPropertyEntity = couponsService.getCouponsProperty(issueCouponsPropertyDTO.getAppId(), issueCouponsPropertyDTO.getCouponsSeq());
         if(couponsPropertyEntity == null){
@@ -144,7 +145,7 @@ public class CouponsPropertyController {
     }
 
     @PostMapping("renewReceive")
-    @ApiOperation(value = "恢复领取优惠券", notes = "恢复领取优惠券接口")
+    @ApiOperation(value = "恢复领取优惠券", notes = "恢复领取优惠券接口,停止领取状态下才可使用")
     public ResponseObject<String> renewReceiveCouponsProperty(@Valid @RequestBody IssueCouponsPropertyDTO issueCouponsPropertyDTO){
         CouponsPropertyEntity couponsPropertyEntity = couponsService.getCouponsProperty(issueCouponsPropertyDTO.getAppId(), issueCouponsPropertyDTO.getCouponsSeq());
         if(couponsPropertyEntity == null){
@@ -162,4 +163,22 @@ public class CouponsPropertyController {
         return ResponseObject.success();
     }
 
+
+    @PostMapping("update")
+    @ApiOperation(value = "更新优惠券信息", notes = "更新优惠券信息接口，未发布状态下才可使用")
+    public ResponseObject<String> renewReceiveCouponsProperty(@Valid @RequestBody UpdateCouponsPropertyDTO updateCouponsPropertyDTO){
+        CouponsPropertyEntity couponsPropertyEntity = couponsService.getCouponsProperty(updateCouponsPropertyDTO.getAppId(), updateCouponsPropertyDTO.getCouponsSeq());
+        if(couponsPropertyEntity == null){
+            throw BusinessException.withErrorCode(ErrorCode.ERROR_CODE_20004);
+        }//状态不是已发布，不能停止
+        else if(ENUM_COUPONS_PROPERTY_STATUS.OK.getCode() != couponsPropertyEntity.getStatus()){
+            throw BusinessException.withErrorCode(ENUM_COUPONS_PROPERTY_STATUS.getTipsByCode(couponsPropertyEntity.getStatus()));
+        }
+
+        CouponsPropertyDTO couponsPropertyDTO = new CouponsPropertyDTO();
+        BeanUtils.copyProperties(updateCouponsPropertyDTO, couponsPropertyDTO);
+        couponsService.updateCouponsProperty(couponsPropertyDTO);
+
+        return ResponseObject.success();
+    }
 }
