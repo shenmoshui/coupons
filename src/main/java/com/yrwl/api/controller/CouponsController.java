@@ -72,4 +72,13 @@ public class CouponsController {
 
         return ResponseObject.success();
     }
+
+    @PostMapping("reset")
+    @ApiOperation(value = "重置优惠券", notes = "重置优惠券接口,退款或者其他情况，需要将已使用的优惠券重置为待使用")
+    public ResponseObject<String> resetCoupons(@Valid @RequestBody ValidList<ConsumeCouponsDTO> consumeCouponsDTOS){
+
+        couponsService.resetCoupons(consumeCouponsDTOS);
+
+        return ResponseObject.success();
+    }
 }

@@ -132,7 +132,7 @@ public class CouponsPropertyController {
         if(couponsPropertyEntity == null){
             throw BusinessException.withErrorCode(ErrorCode.ERROR_CODE_20004);
         }//状态不是可领取，不能停止
-        else if(ENUM_COUPONS_PROPERTY_STATE.OK.getCode() != couponsPropertyEntity.getStatus()){
+        else if(ENUM_COUPONS_PROPERTY_STATE.OK.getCode() != couponsPropertyEntity.getState()){
             throw BusinessException.withErrorCode(ENUM_COUPONS_PROPERTY_STATE.getTipsByCode(couponsPropertyEntity.getState()));
         }
 
@@ -151,7 +151,7 @@ public class CouponsPropertyController {
         if(couponsPropertyEntity == null){
             throw BusinessException.withErrorCode(ErrorCode.ERROR_CODE_20004);
         }//状态不是停止，不能恢复
-        else if(ENUM_COUPONS_PROPERTY_STATE.STOP.getCode() != couponsPropertyEntity.getStatus()){
+        else if(ENUM_COUPONS_PROPERTY_STATE.STOP.getCode() != couponsPropertyEntity.getState()){
             throw BusinessException.withErrorCode(ENUM_COUPONS_PROPERTY_STATE.getTipsByCode(couponsPropertyEntity.getState()));
         }
 

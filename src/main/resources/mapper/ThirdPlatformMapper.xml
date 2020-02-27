@@ -26,7 +26,7 @@
             <if test="expiryDate != null and expiryDate != ''">
                 <![CDATA[ AND expiry_date <= #{expiryDate}]]>
             </if>
-            <if test="status != null and status != ''">
+            <if test="status != null">
                 AND status = #{status}
             </if>
         </where>
@@ -79,7 +79,7 @@
         <if test="expiryDate != null and expiryDate != ''">
             expiry_date = #{expiryDate},
         </if>
-        <if test="status != null and status != ''">
+        <if test="status != null">
             status = #{status},
         </if>
             modified_user = #{modifiedUser}

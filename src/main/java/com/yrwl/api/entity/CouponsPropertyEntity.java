@@ -35,10 +35,10 @@ public class CouponsPropertyEntity extends BaseEntity {
     @ApiModelProperty(value = "优惠券可叠加数量")
     private int superimpositionQuantity;
 
-    @ApiModelProperty(value = "优惠券领取状态：1:可领取,2:停止领取,3:已领完")
+    @ApiModelProperty(value = "优惠券领取状态：0:领取未开始,1:可领取,2:停止领取,3:已领完'")
     private int state;
 
-    @ApiModelProperty(value = "优惠券状态，0:待发布,1:已发布,2:停止使用,4:已过期,5:废弃")
+    @ApiModelProperty(value = "优惠券状态，0:待发布,1:已发布,2:停止使用,3:已过期,4:废弃")
     private int status;
 
     @ApiModelProperty(value = "优惠券有效期")

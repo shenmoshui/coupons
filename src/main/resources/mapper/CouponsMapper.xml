@@ -71,22 +71,22 @@
         UPDATE
             coupons_property
         SET
-        <if test="state != null and state != ''">
+        <if test="state != null">
             state = #{state},
         </if>
         <if test="name != null and name != ''">
             name = #{name},
         </if>
-        <if test="num != null and num != ''">
+        <if test="num != null">
             num = #{num},
         </if>
-        <if test="superimpositionQuantity != null and superimpositionQuantity != ''">
+        <if test="superimpositionQuantity != null">
             superimposition_quantity = #{superimpositionQuantity},
         </if>
         <if test="expiryDate != null and expiryDate != ''">
             expiry_date = #{expiryDate},
         </if>
-        <if test="status != null and status != ''">
+        <if test="status != null">
             status = #{status},
         </if>
         <if test="receiveBeginDate != null and receiveBeginDate != ''">
@@ -120,7 +120,7 @@
             <if test="couponsNo != null and couponsNo != ''">
                 AND coupons_no = #{couponsNo}
             </if>
-            <if test="status != null and status != ''">
+            <if test="status != null">
                 AND status = #{status}
             </if>
             <if test="expiryBeginDate != null and expiryBeginDate != ''">
@@ -163,7 +163,7 @@
         UPDATE
             coupons
         SET
-        <if test="status != null and status != ''">
+        <if test="status != null">
             status = #{status},
         </if>
         <if test="expiryBeginDate != null and expiryBeginDate != ''">

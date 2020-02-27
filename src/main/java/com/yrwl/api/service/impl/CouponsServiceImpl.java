@@ -115,6 +115,14 @@ public class CouponsServiceImpl extends BaseServiceImpl implements CouponsServic
         CouponsPropertyDTO couponsPropertyDTO = new CouponsPropertyDTO();
         BeanUtils.copyProperties(issueCouponsPropertyDTO, couponsPropertyDTO);
         couponsPropertyDTO.setStatus(ENUM_COUPONS_PROPERTY_STATUS.OK.getCode());
+        //优惠券达到可领取的时间，设置为可领取
+        String nowDate = JodaTimeUtils.dateToStr(new Date(), JodaTimeUtils.STANDARD_DATE);
+        if(ENUM_COUPONS_PROPERTY_STATE.NO.getCode() == couponsPropertyEntity.getState() &&
+            nowDate.compareTo(couponsPropertyEntity.getReceiveBeginDate()) >= 0 &&
+            nowDate.compareTo(couponsPropertyEntity.getReceiveEndDate()) <= 0){
+            couponsPropertyDTO.setState(ENUM_COUPONS_PROPERTY_STATE.OK.getCode());
+        }
+
         updateCouponsProperty(couponsPropertyDTO);
     }
 
@@ -149,7 +157,7 @@ public class CouponsServiceImpl extends BaseServiceImpl implements CouponsServic
             couponsPropertyEntity.setState(ENUM_COUPONS_PROPERTY_STATE.OK.getCode());
         }
         else if(couponsPropertyEntity.getStatus() < ENUM_COUPONS_PROPERTY_STATUS.STOP.getCode() &&
-                couponsPropertyEntity.getState() < ENUM_COUPONS_PROPERTY_STATE.NO.getCode() &&
+                couponsPropertyEntity.getState() < ENUM_COUPONS_PROPERTY_STATE.STOP.getCode() &&
                 nowDate.compareTo(couponsPropertyEntity.getReceiveEndDate()) > 0){
             couponsPropertyDTO.setState(ENUM_COUPONS_PROPERTY_STATE.STOP.getCode());
             updateCouponsProperty(couponsPropertyDTO);
@@ -293,6 +301,23 @@ public class CouponsServiceImpl extends BaseServiceImpl implements CouponsServic
         couponsSeqTypeDTOS.forEach(couponsSeqTypeDTO -> {
             if(couponsDao.delCouponsSeqType(couponsSeqTypeDTO) <= 0){
                 throw BusinessException.withErrorCode("删除批次类型异常");
+            }
+        });
+    }
+
+    @Override
+    public void resetCoupons(List<ConsumeCouponsDTO> consumeCouponsDTOS) {
+        consumeCouponsDTOS.forEach(consumeCouponsDTO -> {
+            CouponsEntity couponsEntity = couponsDao.getCoupons(consumeCouponsDTO.getCouponsSeq(), consumeCouponsDTO.getCouponsNo());
+            if(couponsEntity != null &&
+                    couponsEntity.getStatus() == ENUM_COUPONS_STATUS.OVER.getCode()){
+                CouponsDTO couponsDTO = new CouponsDTO();
+                BeanUtils.copyProperties(consumeCouponsDTO, couponsDTO);
+                couponsDTO.setStatus(ENUM_COUPONS_STATUS.WAIT.getCode());
+                updateCoupons(couponsDTO);
+            }
+            else{
+                throw BusinessException.withErrorCode(ErrorCode.ERROR_CODE_20006);
             }
         });
     }

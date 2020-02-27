@@ -11,7 +11,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@ApiModel(value = "CouponsPropertyEntity", description = "第三方平台信息")
+@ApiModel(value = "ThirdPlatformEntity", description = "第三方平台信息")
 public class ThirdPlatformEntity extends BaseEntity{
 
     @ApiModelProperty(value = "主键")

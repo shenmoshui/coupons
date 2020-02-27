@@ -26,7 +26,7 @@ public class CouponsEntity extends BaseEntity {
     @ApiModelProperty(value = "优惠券no")
     private String couponsNo;
 
-    @ApiModelProperty(value = "优惠券状态，0:待使用,1:已使用,2:已过期,3:废弃")
+    @ApiModelProperty(value = "优惠券状态，0:待使用,1:已使用,2:未到使用期,3:已过期,4:废弃")
     private int status;
 
     @ApiModelProperty(value = "可使用开始日期")

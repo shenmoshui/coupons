@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
  * @date 2020-02-11
  */
 @Data
-@ApiModel(value = "ThirdPlatformDTO", description = "第三方平台更新参数")
+@ApiModel(value = "UpdateThirdPlatformDTO", description = "第三方平台更新参数")
 public class UpdateThirdPlatformDTO {
 
     @ApiModelProperty(value = "第三方平台名称")

@@ -134,4 +134,10 @@ public interface CouponsService {
      * @return
      */
     void delCouponsSeqType(List<CouponsSeqTypeDTO> couponsSeqTypeDTOS);
+
+    /**
+     * 将已使用的优惠券重置为待使用状态（退款的情况）
+     * @param consumeCouponsDTOS
+     */
+    void resetCoupons(List<ConsumeCouponsDTO> consumeCouponsDTOS);
 }
