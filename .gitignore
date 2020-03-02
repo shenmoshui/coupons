@@ -2,7 +2,7 @@ HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
-!**/src/test/**
+**/src/test/**
 
 ### STS ###
 .apt_generated
@@ -32,3 +32,4 @@ build/
 
 ### CONFIG FILE ###
 **/resources/config/**
+
